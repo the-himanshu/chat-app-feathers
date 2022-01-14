@@ -40,5 +40,5 @@
       }
     }
   },
-  "postgres": "postgres://postgres:datapost@localhost:5432/chat_app_feathers_db"
+  "postgres": "DATABASE_URL"
 }

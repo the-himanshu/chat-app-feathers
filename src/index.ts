@@ -1,6 +1,8 @@
 import logger from './logger';
 import app from './app';
 
+require('dotenv').config();
+
 const port = app.get('port');
 const server = app.listen(port);
 
