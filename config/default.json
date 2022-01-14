@@ -40,5 +40,5 @@
       }
     }
   },
-  "postgres": "postgres://postgres:@localhost:5432/chat_app_feathers"
+  "postgres": "postgres://postgres:datapost@localhost:5432/chat_app_feathers_db"
 }
