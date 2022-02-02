@@ -6,30 +6,27 @@ import { HookReturn } from 'sequelize/types/lib/hooks';
 
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
-  const users = sequelizeClient.define('users', {
+  const posts = sequelizeClient.define('posts', {
     id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    password: {
+    createdBy: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    avatar: {
+    content: {
       type: DataTypes.STRING,
+      allowNull: false
     },
-    googleId: { type: DataTypes.STRING },
-  
+    updatedBy: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {
@@ -39,10 +36,15 @@ export default function (app: Application): typeof Model {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (users as any).associate = function (models: any): void {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+  (posts as any).associate = function (models: any): void {
+    posts.belongsTo(models.users, {
+      foreignKey: 'createdBy',
+      targetKey: 'id',
+    });
+    posts.hasMany(models.comments, {
+      foreignKey: 'postId',
+    });
   };
 
-  return users;
+  return posts;
 }
