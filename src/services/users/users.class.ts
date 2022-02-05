@@ -11,7 +11,10 @@ const nanoid = customAlphabet(
 );
 
 const gravatarUrl = 'https://s.gravatar.com/avatar';
-const query = 's=60';
+const avatarArray = ['retro', 'robohash', 'monsterid', 'mp', 'identicon', 'wavatar'];
+const randomIndex = Math.floor(Math.random() * (avatarArray.length));
+
+const query = `s=60&d=${avatarArray[randomIndex]}`;
 const getGravatar = (email: string) => {
   const hash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
   return `${gravatarUrl}/${hash}?${query}`;

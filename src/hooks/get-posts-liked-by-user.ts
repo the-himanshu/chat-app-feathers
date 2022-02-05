@@ -6,7 +6,7 @@ import app from "../app";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default (options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
-    const likedPosts: any = await app.services["user-likes-mapping"].find({
+    const likedPosts: any = await app.services["user-likes-mapping"].Model.findAll({
       where: {
         userId: context.params.user?.id,
       }
@@ -16,7 +16,7 @@ export default (options = {}): Hook => {
     for(let element of likedPosts) {
       likedPostsId.push(element.postId)
     }
-
+    
     for (let i = 0; i < context.result.length; i++) {
       if(context.result[i]?.dataValues) {
         context.result[i] = context.result[i].toJSON()

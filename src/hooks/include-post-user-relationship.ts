@@ -12,6 +12,7 @@ export default (options = {}): Hook => {
     }
     context.params.sequelize.include.push({
       model: app.services.users.Model,
+        attributes: ['username', 'email', 'id', 'avatar']
     });
     return context;
   };
