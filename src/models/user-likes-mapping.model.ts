@@ -6,34 +6,19 @@ import { HookReturn } from 'sequelize/types/lib/hooks';
 
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
-  const users = sequelizeClient.define('users', {
+  const userLikesMapping = sequelizeClient.define('user_likes_mapping', {
     id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    password: {
+    postId: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    avatar: {
+    userId: {
       type: DataTypes.STRING,
-    },
-    bio: {
-      type: DataTypes.STRING,
-      defaultValue: "Bio Empty"
-    },
-    googleId: { type: DataTypes.STRING },
-  
+      allowNull: false
+    }
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {
@@ -43,10 +28,10 @@ export default function (app: Application): typeof Model {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (users as any).associate = function (models: any): void {
+  (userLikesMapping as any).associate = function (models: any): void {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
   };
 
-  return users;
+  return userLikesMapping;
 }

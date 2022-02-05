@@ -1,28 +1,31 @@
-import * as feathersAuthentication from '@feathersjs/authentication';
-import includePostUserRelationship from '../../hooks/include-post-user-relationship';
-import includeCommentsInPosts from '../../hooks/include-comments-in-posts';
-import addCommentCountToPost from '../../hooks/add-comment-count-to-post';
+import * as feathersAuthentication from "@feathersjs/authentication";
+import includePostUserRelationship from "../../hooks/include-post-user-relationship";
+import includeCommentsInPosts from "../../hooks/include-comments-in-posts";
+import addCommentCountToPost from "../../hooks/add-comment-count-to-post";
+import createUserLikeMapping from "../../hooks/create-user-like-mapping";
+import getPostsLikedByUser from "../../hooks/get-posts-liked-by-user";
+import checkLikedOrDisliked from '../../hooks/check-liked-or-disliked';
 const { authenticate } = feathersAuthentication.hooks;
 
 export default {
   before: {
-    all: [authenticate('jwt')],
+    all: [authenticate("jwt")],
     find: [includePostUserRelationship()],
     get: [includePostUserRelationship(), includeCommentsInPosts()],
     create: [],
     update: [],
-    patch: [],
-    remove: []
+    patch: [checkLikedOrDisliked()],
+    remove: [],
   },
 
   after: {
     all: [],
-    find: [],
+    find: [getPostsLikedByUser()],
     get: [addCommentCountToPost()],
     create: [],
     update: [],
-    patch: [],
-    remove: []
+    patch: [createUserLikeMapping()],
+    remove: [],
   },
 
   error: {
@@ -32,6 +35,6 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 };
