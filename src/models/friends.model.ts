@@ -6,44 +6,23 @@ import { HookReturn } from 'sequelize/types/lib/hooks';
 
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
-  const comments = sequelizeClient.define('comments', {
+  const friends = sequelizeClient.define('friends', {
     id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    parentCommentId: {
-      type: DataTypes.STRING,
-      defaultValue: null
-    },
-    postId: {
-      type: DataTypes.STRING
-    },
-    creatorName: {
-      type: DataTypes.STRING,
-    },
-    creatorAvatar: {
-      type: DataTypes.STRING,
-    },
-    createdBy: {
+    source: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    content: {
+    target: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    replies: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    updatedBy: {
+    status: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    likes: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
+      defaultValue: 'pending'
+    }
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {
@@ -53,10 +32,18 @@ export default function (app: Application): typeof Model {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (comments as any).associate = function (models: any): void {
-    // Define associations here
-    // See http://docs.sequelizejs.com/en/latest/docs/associations/
+  (friends as any).associate = function (models: any): void {
+    friends.belongsTo(models.users, {
+      foreignKey: 'source',
+      targetKey: 'id',
+      as: 'sourceUser'
+    }),
+    friends.belongsTo(models.users, {
+      foreignKey: 'target',
+      targetKey: 'id',
+      as: 'targetUser'
+    });
   };
 
-  return comments;
+  return friends;
 }

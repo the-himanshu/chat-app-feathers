@@ -6,16 +6,16 @@ import app from '../app';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default (options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
-    if(!context.params?.sequelize) {
-      context.params.sequelize = {}
-      context.params.sequelize.include = []
-    }
-    context.params.sequelize.include.push({
-      model: app.services.comments.Model,
-      where: {
-        parentCommentId: null
+    app.services.users.Model.increment(
+      {
+        requestsReceived: 1,
+      },
+      {
+        where: {
+          id: context.data.target.id,
+        }
       }
-    });
+    );
     return context;
   };
 };

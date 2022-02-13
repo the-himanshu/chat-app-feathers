@@ -1,5 +1,5 @@
 import * as authentication from '@feathersjs/authentication';
-import checkIfCommentIsAReply from '../../hooks/check-if-comment-is-a-reply';
+import formatGetFriendsAndRequestsData from '../../hooks/format-get-friends-and-requests-data';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -9,7 +9,7 @@ export default {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [checkIfCommentIsAReply()],
+    create: [],
     update: [],
     patch: [],
     remove: []
@@ -17,7 +17,7 @@ export default {
 
   after: {
     all: [],
-    find: [],
+    find: [formatGetFriendsAndRequestsData()],
     get: [],
     create: [],
     update: [],

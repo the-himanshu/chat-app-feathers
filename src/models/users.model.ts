@@ -32,6 +32,26 @@ export default function (app: Application): typeof Model {
       type: DataTypes.STRING,
       defaultValue: "Bio Empty"
     },
+    friends: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    friendsList: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: []
+    },
+    pendingSentRequests: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: []
+    },
+    pendingReceivedRequests: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: []
+    },
+    requestsReceived: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     googleId: { type: DataTypes.STRING },
   
   }, {
